@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MessengerScreen</string>
+    <string name="userName">habibellah ayata</string>
+    <string name="greeting">hello my friend how are you bro</string>
+    <string name="chats">Chats</string>
+    <string name="search">Search</string>
+    <string name="arabic">Arabic</string>
+    <string name="english">english</string>
 </resources>

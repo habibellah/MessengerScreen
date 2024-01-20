@@ -1,5 +1,6 @@
 package com.example.messengerscreen
 
+import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,13 +22,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
+import java.util.Locale
 
 @Composable
 fun ActiveUserItem(userName : String) {
@@ -47,35 +51,79 @@ fun ActiveUserItem(userName : String) {
 
 @Composable
 fun MessageFriendItem() {
-   Row(horizontalArrangement = Arrangement.spacedBy(10.dp),
-      modifier = Modifier
-         .height(80.dp)
-         .fillMaxWidth(),
-      verticalAlignment = Alignment.CenterVertically){
-      ProfileImage()
+     Row(horizontalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier
+           .height(80.dp)
+           .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically){
+        ProfileImage()
 
-      Column(verticalArrangement = Arrangement.SpaceAround,
-         modifier = Modifier.fillMaxHeight()){
-         Text(
-            text = "HabibEllah ayata" ,
-            fontSize = 18.sp ,
-            fontWeight = FontWeight.Medium ,
-            maxLines = 1,
-            color = colorResource(
-               id = R.color.title
-            )
-         )
-         Text(text = "hello my friend how are you bro", color = Color.Gray)
-      }
-      Text(text = ".22:25",
-         textAlign = TextAlign.Justify,
-         color = Color.Gray,
-         modifier = Modifier,
-         fontSize = 13.sp
-      )
+        Column(verticalArrangement = Arrangement.SpaceAround,
+           modifier = Modifier.fillMaxHeight()){
+           Text(
+              text = stringResource(id = R.string.userName) ,
+              fontSize = 18.sp ,
+              fontWeight = FontWeight.Medium ,
+              maxLines = 1,
+              color = colorResource(
+                 id = R.color.title
+              )
+           )
+           Text(text = stringResource(id = R.string.greeting), color = Color.Gray)
+        }
+        Text(text = ".22:25",
+           textAlign = TextAlign.End,
+           color = Color.Gray,
+           modifier = Modifier.fillMaxWidth(),
+           fontSize = 13.sp,
+        )
+     }
+
+}
+
+//to get the current language
+@Composable
+fun GetCurrentLocale(): Locale {
+   val configuration = LocalContext.current.resources.configuration
+
+   return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+      configuration.locales[0]
+   } else {
+      @Suppress("DEPRECATION")
+      configuration.locale
    }
 }
 
+//for multiple screen sizes
+/*
+ val screenWidth = LocalConfiguration.current.screenWidthDp
+
+    if (screenWidth > 600.dp) {
+        // Larger screen layout
+        // ...
+    } else {
+        // Smaller screen layout
+        // ...
+    }
+ */
+//handling orientation
+/*
+  val orientation = LocalConfiguration.current.orientation
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            // Landscape layout
+            // ...
+        } else {
+            // Portrait layout
+            // ...
+        }
+    }
+ */
 @Composable
 fun ProfileImage() {
    Box(

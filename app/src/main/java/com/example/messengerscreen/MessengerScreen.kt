@@ -1,5 +1,11 @@
 package com.example.messengerscreen
 
+import android.app.LocaleManager
+import android.content.Context
+import android.os.Build
+import android.os.Build.VERSION
+import android.os.LocaleList
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,6 +26,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -29,18 +36,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.os.LocaleListCompat
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MessengerScreen(){
+   val context = LocalContext.current
 Column(modifier = Modifier
    .fillMaxSize()
    .padding(PaddingValues(12.dp))){
+   Row {
+      Button(onClick = { changeLanguage(context = context, localeString = "ar") }) {
+         Text(text = stringResource(id = R.string.arabic))
+      }
+      Button(onClick = { changeLanguage(context = context, localeString = "en") }) {
+         Text(text = stringResource(id = R.string.english))
+      }
+   }
    Row(modifier = Modifier.fillMaxWidth(),
       verticalAlignment = Alignment.CenterVertically,
       horizontalArrangement = Arrangement.SpaceBetween){
@@ -50,15 +69,17 @@ Column(modifier = Modifier
                .size(40.dp)
                .clip(RoundedCornerShape(100)))
          Spacer(modifier = Modifier.width(15.dp))
-         Text(text = "Chats", fontWeight = FontWeight.Bold, fontSize = 25.sp, color = colorResource(
+         Text(text = stringResource(id = R.string.chats), fontWeight = FontWeight.Bold, fontSize = 25.sp, color = colorResource(
             id = R.color.title
          ))
       }
       Box(
          modifier = Modifier
             .clip(RoundedCornerShape(100))
-            .background(shape = RoundedCornerShape(100),
-               color = colorResource(id = R.color.icon_background))
+            .background(
+               shape = RoundedCornerShape(100) ,
+               color = colorResource(id = R.color.icon_background)
+            )
             .size(40.dp)
             .padding(3.dp),
          contentAlignment = Alignment.Center
@@ -92,7 +113,7 @@ Spacer(modifier = Modifier.height(15.dp))
              Icon(imageVector = Icons.Default.Search,
                 contentDescription = "", tint = colorResource(id = R.color.search_Text))
              Spacer(modifier = Modifier.width(6.dp))
-             Text(text = "Search", fontSize = 17.sp, color = colorResource(id = R.color.search_Text))
+             Text(text = stringResource(id = R.string.search), fontSize = 17.sp, color = colorResource(id = R.color.search_Text))
           }
       }
    )
@@ -103,11 +124,11 @@ Spacer(modifier = Modifier.height(15.dp))
       horizontalArrangement = Arrangement.spacedBy(5.dp)
    ){
       items(listOf(1,1,1,1,1,1,1,1,1)){
-         ActiveUserItem("habibellah ayata")
+         ActiveUserItem(stringResource(id = R.string.userName))
       }
    }
    Spacer(modifier = Modifier.height(10.dp))
-   LazyColumn{
+   LazyColumn(modifier = Modifier.fillMaxWidth()){
       items(listOf(1,1,1,1,1,1,1,1,1,2)){
          MessageFriendItem()
       }
@@ -115,9 +136,16 @@ Spacer(modifier = Modifier.height(15.dp))
 }
 }
 
+private fun changeLanguage(context : Context,localeString : String){
+   if(VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+      context.getSystemService(LocaleManager::class.java)
+         .applicationLocales = LocaleList.forLanguageTags(localeString)
+   }else{
+      AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(localeString))
+   }
+}
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun Preview(){
-   MessengerScreen()
 }

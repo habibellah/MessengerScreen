@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">شاشة مسنجر</string>
+    <string name="userName">حبيب الله عياطة</string>
+    <string name="greeting">مرحبا صديقي كيف حالك أخي</string>
+    <string name="chats">الدردشات</string>
+    <string name="search">إبحث</string>
+    <string name="arabic">العربية</string>
+    <string name="english">الانجليزية</string>
+</resources>
